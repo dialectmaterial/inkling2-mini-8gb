@@ -1,0 +1,64 @@
+{
+ "base_url": "http://127.0.0.1:8086",
+ "model": "inkling2-mini",
+ 
+ "temperature": 0.6,
+ "concurrency": 1,
+ "prefill_lengths": [
+  4096
+ ],
+ "require_ac": true,
+ "memory": {
+  "cap_gib": 7.9,
+  "probe": [
+   "bash",
+   "~/.cache/llama.cpp/2026-11-23_inkling2-mini/gpu-mem.sh"
+  ],
+  "interval_s": 2
+ },
+ "stop": [
+  "systemctl",
+  "--user",
+  "stop",
+  "inkbench"
+ ],
+ "health_timeout_s": 300,
+ "name": "dd-off",
+ "launch": [
+  "bash",
+  "~/.cache/llama.cpp/2026-11-23_inkling2-mini/launch.sh",
+  "ink-dedup@Inkling-2-Mini-UD-Q3_K_XL.gguf",
+  "--n-gpu-layers",
+  "99",
+  "--flash-attn",
+  "on",
+  "--fit",
+  "off",
+  "--ctx-size",
+  "32768",
+  "--parallel",
+  "1",
+  "--batch-size",
+  "512",
+  "--ubatch-size",
+  "32",
+  "--cache-type-k",
+  "q4_0",
+  "--cache-type-v",
+  "q4_0",
+  "--no-op-offload",
+  "--load-mode",
+  "none",
+  "--threads",
+  "8",
+  "--threads-batch",
+  "12",
+  "--cpu-moe",
+  "--moe-cache-mib",
+  "5600",
+  "--verbosity",
+  "4",
+  "-E",
+  "LLAMA_MOE_CACHE_DEDUP=0"
+ ]
+}

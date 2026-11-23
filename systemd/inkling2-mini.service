@@ -1,0 +1,22 @@
+[Unit]
+Description=Inkling-2-Mini (official weights, unsloth UD-Q3_K_XL, CPU experts + 5.6 GB GPU expert cache, loop dedup fix) local inference
+Conflicts=qwen35-9b.service qwen35-9b-abliterated.service
+After=qwen35-9b.service qwen35-9b-abliterated.service
+
+[Service]
+Type=exec
+# Tuned 2026-11-23, see ~/.cache/llama.cpp/2026-11-23_inkling2-mini/PLAN.md
+# Build: llama.cpp cbb1c1c + MoE cache loop dedup (issue #32744), ~/.local/src/llama-moefix branch moe-cache-loop-dedup
+Environment=LD_LIBRARY_PATH=%h/.local/share/llama.cpp/ink-dedup/bin
+ExecStart=%h/.local/share/llama.cpp/ink-dedup/bin/llama-server \
+    --model %h/.local/share/llama.cpp/inkling2-mini/Inkling-2-Mini-UD-Q3_K_XL.gguf \
+    --n-gpu-layers 99 --flash-attn on --fit off --jinja --verbosity 4 \
+    --ctx-size 32768 --parallel 1 --batch-size 512 --ubatch-size 32 \
+    --cache-type-k q4_0 --cache-type-v q4_0 --no-op-offload --load-mode none \
+    --cpu-moe --moe-cache-mib 5600 \
+    --threads 8 --threads-batch 12 \
+    --alias inkling2-mini --host 127.0.0.1 --port 8085 --offline --no-webui \
+    --api-key-file %h/.config/llama/api-key
+ExecStartPost=/usr/bin/curl --fail --silent --output /dev/null --noproxy '*' --max-time 2 --retry 45 --retry-delay 1 --retry-connrefused http://127.0.0.1:8085/health
+TimeoutStartSec=60
+TimeoutStopSec=15

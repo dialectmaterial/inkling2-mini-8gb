@@ -1,0 +1,63 @@
+{
+ "base_url": "http://127.0.0.1:8086",
+ "model": "inkling2-mini",
+ 
+ "temperature": 0.6,
+ "concurrency": 1,
+ "prefill_lengths": [
+  4096
+ ],
+ "require_ac": true,
+ "memory": {
+  "cap_gib": 7.9,
+  "probe": [
+   "bash",
+   "~/.cache/llama.cpp/2026-11-23_inkling2-mini/gpu-mem.sh"
+  ],
+  "interval_s": 2
+ },
+ "stop": [
+  "systemctl",
+  "--user",
+  "stop",
+  "inkbench"
+ ],
+ "health_timeout_s": 300,
+ "name": "dspark-a",
+ "launch": [
+  "bash",
+  "~/.cache/llama.cpp/2026-11-23_inkling2-mini/launch.sh",
+  "ink-a@Inkling-2-Mini-UD-Q3_K_XL.gguf",
+  "--n-gpu-layers",
+  "99",
+  "--flash-attn",
+  "on",
+  "--fit",
+  "off",
+  "--ctx-size",
+  "32768",
+  "--parallel",
+  "1",
+  "--batch-size",
+  "512",
+  "--ubatch-size",
+  "32",
+  "--cache-type-k",
+  "q4_0",
+  "--cache-type-v",
+  "q4_0",
+  "--no-op-offload",
+  "--load-mode",
+  "none",
+  "-ot",
+  "blk\\.([0-5]|1[2-3]|1[7-9]|2[0-3])\\.ffn_.*_exps\\.weight=CPU",
+  "--threads",
+  "8",
+  "--threads-batch",
+  "16",
+  "--spec-type",
+  "draft-dspark",
+  "--model-draft",
+  "~/.local/share/llama.cpp/inkling2-mini/dspark-Inkling-2-Mini-Q8_0.gguf"
+ ]
+}

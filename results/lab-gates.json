@@ -1,0 +1,66 @@
+{
+ "tool": "sybil-solutions/local-ai-registry lab/lab.py gates() @ e10a785",
+ "card": "rtx-5060-laptop-8gb",
+ "engine": "llama.cpp cbb1c1c (no registry engine profile; gates called directly)",
+ "passed": true,
+ "proof": {
+  "gates": "load chat reasoning tools context speed",
+  "tps": 26.9,
+  "prefill": 53,
+  "served": "inkling2-mini"
+ },
+ "evidence": {
+  "ok": {
+   "load": true,
+   "chat": true,
+   "reasoning": true,
+   "tools": true,
+   "context": true,
+   "speed": true
+  },
+  "spec": null,
+  "chat": {
+   "content": "Red, yellow, blue",
+   "finish": "stop"
+  },
+  "reasoning": {
+   "thinking_chars": 123,
+   "content": "391"
+  },
+  "tools": {
+   "call": [
+    {
+     "type": "function",
+     "function": {
+      "name": "get_weather",
+      "arguments": "{\"city\":\"Paris\"}"
+     },
+     "id": "7trjbMUWkiYqZEFF4rp18dgYkl7NYBf9"
+    }
+   ],
+   "reply": "Paris right now: 17°C, overcast. Code: 40fd5460",
+   "code": "40fd5460",
+   "finish": "stop",
+   "calls_again": 0,
+   "thinking_chars": 461
+  },
+  "context": {
+   "prompt_tokens": 22250,
+   "seconds": 423.5,
+   "content": "58213"
+  },
+  "speed": {
+   "window_s": 30.0,
+   "tokens_in_window": 808,
+   "tokens_total": 1463,
+   "seconds_total": 53.1,
+   "counted": "tokenizer",
+   "accounting": "client tokens over the first 30 s after the first token; speculative drafts are not counted as accepted"
+  },
+  "prefill": {
+   "value": 53,
+   "source": "context gate: prompt tokens / the whole request's seconds (queue + prefill + the short answer), cold unique filler"
+  }
+ },
+ "wall_s": 500
+}
